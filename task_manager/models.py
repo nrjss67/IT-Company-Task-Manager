@@ -11,7 +11,7 @@ class Position(models.Model):
 
 
 class Worker(AbstractUser):
-    position = models.ForeignKey(Position, on_delete=models.CASCADE)
+    position = models.ForeignKey(Position, on_delete=models.CASCADE, null=True, blank=True)
 
 
 class Task(models.Model):
@@ -29,3 +29,14 @@ class Task(models.Model):
     priority = models.CharField(choices=Priorety.choices, default=Priorety.L, max_length=1)
     task_type = models.ForeignKey(TaskType, on_delete=models.CASCADE)
     assignees = models.ManyToManyField(Worker)
+
+
+class Team(models.Model):
+    class TeamSelect(models.TextChoices):
+        JUNIOR = "Junior Team", "Junior Team"
+        MIDDLE = "Middle Team", "Middle Team"
+        SENIOR = "Senior Team", "Senior Team"
+
+    name = models.CharField(max_length=100, choices=TeamSelect.choices)
+    workers = models.ForeignKey(Worker, on_delete=models.CASCADE)
+    tasks = models.ForeignKey(Task, on_delete=models.CASCADE)
